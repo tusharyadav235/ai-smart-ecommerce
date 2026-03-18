@@ -52,7 +52,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/ai-smart-ecommerce:latest ./backend
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/ai-smart-ecommerce:latest .
 
     - name: Push image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/ai-smart-ecommerce:latest
