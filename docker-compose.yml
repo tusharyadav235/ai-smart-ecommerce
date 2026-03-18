@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: mysql:8
+    container_name: ai-ecommerce-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ai_ecommerce
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ai-network
+
+  redis:
+    image: redis:7
+    container_name: ai-ecommerce-redis
+    restart: always
+    command: redis-server --requirepass ${SPRING_REDIS_PASSWORD}
+    networks:
+      - ai-network
+
+  backend:
+    image: tusharyadaav/ai-ecommerce-backend:latest
+    container_name: ai-ecommerce-backend
+    restart: always
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    networks:
+      - ai-network
+
+volumes:
+  mysql_data:
+
+networks:
+  ai-network:
