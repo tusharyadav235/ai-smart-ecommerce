@@ -1,0 +1,41 @@
+name : Ai powered E-commerce Platform
+
+on:
+ push:
+  branches:
+   - main
+ pull_request:
+  branches:
+   - main
+
+jobs:
+ build-and-test:
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Checkout code
+     uses: actions/checkout@v4.2.2
+
+   - name: Set up java
+     uses: actions/setup-java@v3
+     with:
+      java-version: 17
+      distribution: 'temurin'
+      cache: maven
+
+   - name: Maven build and test
+     run: |
+       cd backend
+       mvn  clean test -b
+
+   - name: Upload test results
+     uses: actions/upload-artifact@v4.6.2
+     if: always()
+     with:
+      name: test upload
+      path: backend/target/surefire-reports/
+      if-no-files-found: ignore
+
+
+
+
