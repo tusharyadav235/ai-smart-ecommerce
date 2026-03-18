@@ -25,7 +25,6 @@ jobs:
 
    - name: Maven build and test
      run: |
-       cd ai-smart-ecommerce
        mvn  clean test -B
 
    - name: Upload test results
